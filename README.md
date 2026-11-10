@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MP Models
 
-## Getting Started
+International model management site — Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4, Prisma, MySQL.
 
-First, run the development server:
+Public site is English. Admin panel manages models, casting boards (`/cast/[token]`), jobs and calendar.
+
+## Quick start
 
 ```bash
+npm install
+cp .env.example .env   # then fill SESSION_SECRET + DATABASE_URL
+npm run db:push
+npm run db:seed
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). Without `DATABASE_URL` the public site falls back to dummy data; the admin panel needs a database.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Security notes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Admin routes are gated by JWT cookies (`httpOnly`, `sameSite=lax`, `secure` in production) + DB session check
+- Login, public forms and uploads are rate-limited; forms include a honeypot
+- Uploads are type-sniffed (magic bytes), size-capped and stored under random UUIDs — path traversal is blocked
+- Casting pages use unguessable tokens and are `noindex`
+- Security headers: HSTS, CSP, frame denial, nosniff, Referrer-Policy, Permissions-Policy
+- `.env` is gitignored — never commit secrets
 
-## Learn More
+Change the seeded admin password after first login.
 
-To learn more about Next.js, take a look at the following resources:
+## Vercel (temporary deploy)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Create a managed MySQL database and set `DATABASE_URL` + a strong `SESSION_SECRET` in the Vercel project env.
+2. Run `npx prisma db push` (and seed) against that database once.
+3. Deploy from this repo. Note: local `/uploads` disk storage **does not persist** on Vercel serverless — for real media use object storage (S3 / Vercel Blob / Cloudflare R2) before production.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Local development |
+| `npm run build` | Production build |
+| `npm run db:push` | Sync Prisma schema |
+| `npm run db:seed` | Seed admin + sample data |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Repo
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+https://github.com/onuraykutalp/mp-models

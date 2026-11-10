@@ -1,0 +1,228 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Division {
+  WOMEN
+  MEN
+  KIDS
+  TALENTS
+}
+
+enum Board {
+  MAINBOARD
+  NEW_FACES
+  PLUS_SIZE
+  INFLUENCER
+  UGC_CREATOR
+  MAKEUP_ARTIST
+  PHOTOGRAPHER
+  HAIR_STYLIST
+}
+
+enum ImageKind {
+  PORTFOLIO
+  SNAP
+}
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWING
+  ACCEPTED
+  REJECTED
+}
+
+enum JobKind {
+  BASIC_EVENT
+  WORK
+  FITTING
+  ZOOM_CALL
+}
+
+model Model {
+  id          String       @id @default(cuid())
+  slug        String       @unique
+  firstName   String
+  lastName    String
+  division    Division
+  board       Board?
+  /// Measurements are required for models but optional for talents (photographers, stylists…).
+  height      Int?
+  bust        Int?
+  waist       Int?
+  hips        Int?
+  shoes       Float?
+  hair        String?
+  eyes        String?
+  city        String
+  nationality String
+  instagram   String?
+  tiktok      String?
+  website     String?      @db.VarChar(300)
+  followers   Int?
+  specialties String?      @db.VarChar(200)
+  bio         String       @db.Text
+  coverImage  String       @db.VarChar(500)
+  portfolioPdf String?     @db.VarChar(500)
+  /// Where the model is right now (ISO 3166 alpha-2) and for how long; all optional.
+  locationCountry String?  @db.VarChar(2)
+  locationCity    String?  @db.VarChar(80)
+  locationFrom    DateTime? @db.Date
+  locationTo      DateTime? @db.Date
+  featured    Boolean      @default(false)
+  published   Boolean      @default(true)
+  images      ModelImage[]
+  videos      ModelVideo[]
+  bookings    BookingRequest[]
+  jobTypes    JobTypeModel[]
+  jobs        ModelJob[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([division, board])
+  @@index([locationCountry])
+  @@index([featured])
+  @@index([published])
+}
+
+/// Booked work for a model — shown on the admin calendar.
+model ModelJob {
+  id          String    @id @default(cuid())
+  modelId     String
+  model       Model     @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  kind        JobKind
+  /// Optional display name — only used for BASIC_EVENT (e.g. "Brand dinner").
+  customTitle String?   @db.VarChar(120)
+  date        DateTime  @db.Date
+  endDate     DateTime? @db.Date
+  agencyFee   Decimal   @db.Decimal(10, 2)
+  modelFee    Decimal   @db.Decimal(10, 2)
+  /// ISO 4217 currency code (EUR, USD, TRY…).
+  currency    String    @default("EUR") @db.VarChar(3)
+  country     String?   @db.VarChar(2)
+  city        String?   @db.VarChar(80)
+  notes       String?   @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([date])
+  @@index([endDate])
+  @@index([modelId, date])
+  @@index([kind])
+}
+
+/// Client casting boards — reachable only via an unguessable /cast/[token] link.
+model JobType {
+  id          String         @id @default(cuid())
+  title       String         @db.VarChar(160)
+  description String?        @db.Text
+  /// Internal note — client / campaign name, not shown on the public page.
+  clientName  String?        @db.VarChar(120)
+  token       String         @unique @db.VarChar(32)
+  active      Boolean        @default(true)
+  models      JobTypeModel[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([active])
+}
+
+model JobTypeModel {
+  jobTypeId String
+  modelId   String
+  order     Int     @default(0)
+  jobType   JobType @relation(fields: [jobTypeId], references: [id], onDelete: Cascade)
+  model     Model   @relation(fields: [modelId], references: [id], onDelete: Cascade)
+
+  @@id([jobTypeId, modelId])
+  @@index([modelId])
+}
+
+model ModelImage {
+  id      String    @id @default(cuid())
+  kind    ImageKind @default(PORTFOLIO)
+  url     String    @db.VarChar(500)
+  alt     String
+  order   Int       @default(0)
+  modelId String
+  model   Model     @relation(fields: [modelId], references: [id], onDelete: Cascade)
+
+  @@index([modelId, kind])
+}
+
+model ModelVideo {
+  id      String  @id @default(cuid())
+  url     String  @db.VarChar(500)
+  poster  String? @db.VarChar(500)
+  order   Int     @default(0)
+  modelId String
+  model   Model   @relation(fields: [modelId], references: [id], onDelete: Cascade)
+
+  @@index([modelId])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  lastLoginAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  excerpt     String   @db.Text
+  content     String   @db.Text
+  category    String
+  coverImage  String   @db.VarChar(500)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([publishedAt])
+}
+
+model Application {
+  id        String            @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  phone     String
+  birthDate DateTime
+  gender    String
+  height    Int
+  city      String
+  instagram String?
+  message   String?           @db.Text
+  status    ApplicationStatus @default(PENDING)
+  createdAt DateTime          @default(now())
+}
+
+model BookingRequest {
+  id        String   @id @default(cuid())
+  company   String
+  name      String
+  email     String
+  dates     String?
+  message   String?  @db.Text
+  models    Model[]
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+}

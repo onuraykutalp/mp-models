@@ -7,7 +7,6 @@ import { Field, Notice, PasswordField, SubmitButton } from "./ui";
 
 export function LoginForm({ next }: { next?: string }) {
   const { state, onSubmit, pending } = useFormAction(login);
-
   return (
     <form onSubmit={onSubmit} className="mt-8 space-y-5" noValidate>
       {next && <input type="hidden" name="next" value={next} />}

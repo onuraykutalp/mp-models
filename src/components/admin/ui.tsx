@@ -40,7 +40,7 @@ export function Field({ label, name, error, hint, suffix, className, ...props }:
 }
 
 export function FieldMessage({ id, error, hint }: { id?: string; error?: string; hint?: ReactNode }) {
-  if (error) {
+  if (error?.trim()) {
     return (
       <p id={id} className="mt-1.5 text-xs text-red-400">
         {error}

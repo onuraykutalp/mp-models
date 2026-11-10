@@ -47,7 +47,14 @@ export async function login(_prev: FormState, fd: FormData): Promise<FormState> 
   const admin = await prisma.adminUser.findUnique({ where: { email } });
   const valid = await verifyPassword(password, admin?.passwordHash ?? (await DUMMY_HASH));
   if (!admin || !valid) {
-    return { status: "error", message: "Incorrect email or password." };
+    return {
+      status: "error",
+      message: "Incorrect email or password. Please check your details and try again.",
+      errors: {
+        email: " ",
+        password: "Wrong email or password.",
+      },
+    };
   }
 
   await prisma.adminUser.update({ where: { id: admin.id }, data: { lastLoginAt: new Date() } });

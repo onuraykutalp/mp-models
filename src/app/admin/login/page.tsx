@@ -11,7 +11,11 @@ const VIDEO = "https://videos.pexels.com/video-files/9509328/9509328-hd_1366_720
 const POSTER = "https://images.pexels.com/videos/9509328/pexels-photo-9509328.jpeg?auto=compress&cs=tinysrgb&w=1200";
 
 export default async function LoginPage({ searchParams }: PageProps<"/admin/login">) {
-  if (await getAdmin()) redirect("/admin");
+  try {
+    if (await getAdmin()) redirect("/admin");
+  } catch (error) {
+    console.error("[admin/login] getAdmin failed:", error);
+  }
   const { next } = await searchParams;
 
   return (

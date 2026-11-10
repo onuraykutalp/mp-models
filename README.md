@@ -29,9 +29,26 @@ Change the seeded admin password after first login.
 
 ## Vercel (temporary deploy)
 
-1. Create a managed MySQL database and set `DATABASE_URL` + a strong `SESSION_SECRET` in the Vercel project env.
-2. Run `npx prisma db push` (and seed) against that database once.
-3. Deploy from this repo. Note: local `/uploads` disk storage **does not persist** on Vercel serverless — for real media use object storage (S3 / Vercel Blob / Cloudflare R2) before production.
+In the Vercel project → **Settings → Environment Variables**, set at least:
+
+| Name | Notes |
+| --- | --- |
+| `DATABASE_URL` | Hosted MySQL URL (PlanetScale, Railway, Neon, Aiven…). Must be reachable from the internet — `localhost` will not work. |
+| `SESSION_SECRET` | Random string, **at least 32 characters**. |
+
+Then apply the schema and create admins against that same database (from your laptop):
+
+```bash
+# PowerShell
+$env:DATABASE_URL="mysql://USER:PASS@HOST:3306/DB"
+npx prisma db push
+$env:ADMINS="magda@mpmodels.com:Magda:YOUR_PASSWORD;poli@mpmodels.com:Poli:YOUR_PASSWORD"
+node scripts/create-admins.mjs
+```
+
+Redeploy after changing env vars (Deployments → … → Redeploy).
+
+Note: local `/uploads` disk storage **does not persist** on Vercel serverless — for real media use object storage (S3 / Vercel Blob / Cloudflare R2) before production.
 
 ## Scripts
 

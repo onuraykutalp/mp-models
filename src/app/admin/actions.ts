@@ -8,6 +8,7 @@ import type { Board, Division, FormState, JobKind } from "@/types";
 import { prisma } from "@/lib/prisma";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
 import { createSession, deleteSession, requireAdmin } from "@/lib/auth/session";
+import { hasSessionSecret } from "@/lib/auth/token";
 import { JOB_KINDS, isJobCurrency } from "@/lib/jobs";
 import { deleteUploads } from "@/lib/uploads";
 import { clientIp, rateLimit, safeAdminNext } from "@/lib/security";
@@ -36,6 +37,19 @@ export async function login(_prev: FormState, fd: FormData): Promise<FormState> 
   const parsed = loginSchema.safeParse(Object.fromEntries(fd));
   if (!parsed.success) return { status: "error", errors: fieldErrors(parsed.error) };
 
+  if (!process.env.DATABASE_URL) {
+    return {
+      status: "error",
+      message: "Server is missing DATABASE_URL. Add it in the Vercel project environment variables.",
+    };
+  }
+  if (!hasSessionSecret()) {
+    return {
+      status: "error",
+      message: "Server is missing SESSION_SECRET (min 32 characters). Add it in the Vercel project environment variables.",
+    };
+  }
+
   const { email, password, next } = parsed.data;
   const ip = await clientIp();
   const key = `login:${ip}:${email}`;
@@ -44,7 +58,17 @@ export async function login(_prev: FormState, fd: FormData): Promise<FormState> 
     return { status: "error", message: "Too many attempts. Please wait 15 minutes and try again." };
   }
 
-  const admin = await prisma.adminUser.findUnique({ where: { email } });
+  let admin;
+  try {
+    admin = await prisma.adminUser.findUnique({ where: { email } });
+  } catch (error) {
+    console.error("[auth] login database error:", error);
+    return {
+      status: "error",
+      message: "Cannot reach the database. Check DATABASE_URL and that the schema has been pushed (prisma db push).",
+    };
+  }
+
   const valid = await verifyPassword(password, admin?.passwordHash ?? (await DUMMY_HASH));
   if (!admin || !valid) {
     return {
@@ -57,8 +81,16 @@ export async function login(_prev: FormState, fd: FormData): Promise<FormState> 
     };
   }
 
-  await prisma.adminUser.update({ where: { id: admin.id }, data: { lastLoginAt: new Date() } });
-  await createSession(admin.id);
+  try {
+    await prisma.adminUser.update({ where: { id: admin.id }, data: { lastLoginAt: new Date() } });
+    await createSession(admin.id);
+  } catch (error) {
+    console.error("[auth] createSession failed:", error);
+    return {
+      status: "error",
+      message: "Signed in, but the session cookie could not be created. Check SESSION_SECRET on Vercel.",
+    };
+  }
   redirect(safeAdminNext(next));
 }
 

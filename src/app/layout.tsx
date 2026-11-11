@@ -4,11 +4,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "MP Models — Model Management",
-    template: "%s — MP Models",
+    default: "Three15 Management",
+    template: "%s — Three15 Management",
   },
   description:
-    "MP Models is an international model management agency based in Istanbul and Milan, representing women, men, plus sizes, kids and talents.",
+    "Three15 Management is an international model management agency representing women, men, plus sizes, kids and talents.",
 };
 
 export const viewport: Viewport = {

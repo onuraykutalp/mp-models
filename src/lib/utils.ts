@@ -59,6 +59,12 @@ export const BOARDS: Record<Board, BoardInfo> = {
     label: "Hair Stylists",
     description: "Session stylists for shows, shoots and red-carpet looks.",
   },
+  DANCER: {
+    key: "DANCER",
+    slug: "dancers",
+    label: "Dancers",
+    description: "Contemporary, commercial and stage dancers for film, fashion and live performance.",
+  },
 };
 
 /** A board-like listing derived from where models currently are rather than a stored board. */
@@ -113,8 +119,8 @@ export const DIVISIONS: DivisionInfo[] = [
     key: "TALENTS",
     slug: "talents",
     label: "Talents",
-    description: "Influencers, creators and the artists behind the image.",
-    boards: ["INFLUENCER", "UGC_CREATOR", "MAKEUP_ARTIST", "PHOTOGRAPHER", "HAIR_STYLIST"],
+    description: "Influencers, creators, dancers and the artists behind the image.",
+    boards: ["INFLUENCER", "UGC_CREATOR", "MAKEUP_ARTIST", "PHOTOGRAPHER", "HAIR_STYLIST", "DANCER"],
     measured: false,
     placement: false,
   },

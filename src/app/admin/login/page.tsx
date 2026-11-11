@@ -33,7 +33,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/admin/logi
         />
         <div className="absolute inset-0 bg-gradient-to-tr from-night via-night/60 to-night/10" />
         <div className="relative flex h-full flex-col justify-between p-12">
-          <Link href="/" aria-label="MP Models home" className="inline-flex self-start text-paper">
+          <Link href="/" aria-label="Three15 Management home" className="inline-flex self-start text-paper">
             <Wordmark size="md" />
           </Link>
           <div className="max-w-md">
@@ -53,7 +53,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/admin/logi
           className="pointer-events-none absolute top-1/4 left-1/2 size-[420px] -translate-x-1/2 rounded-full bg-clay/20 blur-[120px]"
         />
         <div className="relative w-full max-w-sm">
-          <Link href="/" aria-label="MP Models home" className="mb-12 inline-flex lg:hidden">
+          <Link href="/" aria-label="Three15 Management home" className="mb-12 inline-flex lg:hidden">
             <Wordmark size="md" />
           </Link>
           <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-medium text-zinc-400">

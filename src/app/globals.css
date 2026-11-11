@@ -15,6 +15,7 @@
   --font-display: var(--font-bodoni), var(--font-bodoni-ext), ui-serif, Georgia, serif;
 
   --animate-fade-up: fade-up 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-clock-colon: clock-colon 1.6s steps(1, end) infinite;
 
   @keyframes fade-up {
     from {
@@ -24,6 +25,17 @@
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes clock-colon {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0.18;
     }
   }
 }

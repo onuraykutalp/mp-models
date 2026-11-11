@@ -23,6 +23,7 @@ enum Board {
   MAKEUP_ARTIST
   PHOTOGRAPHER
   HAIR_STYLIST
+  DANCER
 }
 
 enum ImageKind {

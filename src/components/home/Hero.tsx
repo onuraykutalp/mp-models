@@ -38,7 +38,7 @@ export function Hero() {
 
       <Link
         href="/"
-        aria-label="MP Models home"
+        aria-label="Three15 Management home"
         className="animate-fade-up mx-auto mt-8 flex flex-col items-center sm:mt-12"
       >
         <Wordmark size="lg" />

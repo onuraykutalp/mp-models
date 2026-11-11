@@ -32,6 +32,7 @@ const BOARD_SPECIALTY_HINTS: Partial<Record<Board, string>> = {
   MAKEUP_ARTIST: "Editorial, Bridal, Runway",
   PHOTOGRAPHER: "Fashion, Portrait, Campaign",
   HAIR_STYLIST: "Session, Runway, Red Carpet",
+  DANCER: "Contemporary, Commercial, Hip-Hop",
 };
 
 interface ModelFormProps {

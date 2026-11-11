@@ -8,7 +8,8 @@ export type Board =
   | "UGC_CREATOR"
   | "MAKEUP_ARTIST"
   | "PHOTOGRAPHER"
-  | "HAIR_STYLIST";
+  | "HAIR_STYLIST"
+  | "DANCER";
 
 export type JobKind = "BASIC_EVENT" | "WORK" | "FITTING" | "ZOOM_CALL";
 

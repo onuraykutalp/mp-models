@@ -21,7 +21,7 @@ export default function CastLayout({ children }: { children: React.ReactNode }) 
       <main className="flex-1">{children}</main>
       <footer className="border-t border-line/70">
         <div className="container-x flex flex-col gap-1 py-8 text-xs text-stone sm:flex-row sm:items-center sm:justify-between">
-          <span>MP Models · Confidential selection</span>
+          <span>Three15 Management · Confidential selection</span>
           <a href="mailto:booking@mpmodels.com" className="link-underline text-ink">
             booking@mpmodels.com
           </a>

@@ -29,6 +29,7 @@ export default async function AdminModelsPage({ searchParams }: PageProps<"/admi
       coverImage: true,
       height: true,
       city: true,
+      nationality: true,
       featured: true,
       published: true,
       updatedAt: true,

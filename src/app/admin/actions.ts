@@ -200,8 +200,8 @@ const modelSchema = z
     ),
     hair: optionalText("Hair", 40),
     eyes: optionalText("Eyes", 40),
-    city: text("City"),
-    nationality: text("Nationality"),
+    city: z.preprocess(blankToNull, z.string().trim().max(80, "City is too long.").nullable()).transform((v) => v ?? ""),
+    nationality: text("Country"),
     instagram: handle,
     tiktok: handle,
     website: z.preprocess(
@@ -248,7 +248,7 @@ const modelSchema = z
         if (d[key] == null) ctx.addIssue({ code: "custom", path: [key], message: `${label} is required.` });
       }
     }
-    const hasStay = d.locationCity || d.locationFrom || d.locationTo;
+    const hasStay = d.locationFrom || d.locationTo;
     if (!d.locationCountry && hasStay) {
       ctx.addIssue({ code: "custom", path: ["locationCountry"], message: "Choose the country first." });
     }

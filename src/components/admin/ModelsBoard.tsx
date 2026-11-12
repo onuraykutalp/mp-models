@@ -19,6 +19,7 @@ export interface BoardModel {
   coverImage: string;
   height: number | null;
   city: string;
+  nationality: string;
   featured: boolean;
   published: boolean;
   media: number;
@@ -86,7 +87,7 @@ export function ModelsBoard({ models, initialCategory, initialBoard, savedName }
           (status === "published" && m.published) ||
           (status === "draft" && !m.published) ||
           (status === "featured" && m.featured)) &&
-        (!q || fold(`${m.firstName} ${m.lastName} ${m.city}`).includes(q)),
+        (!q || fold(`${m.firstName} ${m.lastName} ${m.city} ${m.nationality}`).includes(q)),
     );
   }, [models, category, board, status, deferredQuery]);
 
@@ -154,7 +155,7 @@ export function ModelsBoard({ models, initialCategory, initialBoard, savedName }
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by name or city"
+            placeholder="Search by name or country"
             className="admin-input pl-10"
           />
         </label>
@@ -240,7 +241,7 @@ function ModelTile({ model }: { model: BoardModel }) {
         <div className="flex items-center justify-between gap-2 px-3 py-2.5">
           <span className="min-w-0">
             <span className="block truncate text-sm font-medium">{name}</span>
-            <span className="block truncate text-xs text-zinc-500">{model.city}</span>
+            <span className="block truncate text-xs text-zinc-500">{model.nationality || model.city}</span>
           </span>
         </div>
       </Link>

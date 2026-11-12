@@ -60,7 +60,8 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
       <section className="container-x grid gap-10 pt-8 pb-24 lg:grid-cols-12 lg:gap-12 lg:pb-32">
         <aside className="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
           <p className="eyebrow text-stone">
-            {categoryLabel(model)} — {model.city}
+            {categoryLabel(model)}
+            {model.nationality ? ` — ${model.nationality}` : model.city ? ` — ${model.city}` : ""}
           </p>
           <h1 className="font-display mt-3 text-4xl leading-tight sm:text-5xl">
             {model.firstName}
@@ -114,12 +115,8 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
 
           <dl className="mt-6 flex gap-8 text-sm">
             <div>
-              <dt className="text-stone">Nationality</dt>
+              <dt className="text-stone">Country</dt>
               <dd className="font-medium">{model.nationality}</dd>
-            </div>
-            <div>
-              <dt className="text-stone">Based in</dt>
-              <dd className="font-medium">{model.city}</dd>
             </div>
           </dl>
 

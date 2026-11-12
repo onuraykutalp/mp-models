@@ -123,7 +123,7 @@ export function ModelForm({ id, slug, initial, suggestions }: ModelFormProps) {
     ? [
         ["Board", values.board ? BOARDS[values.board].label : "—"],
         ["Followers", followersNumber > 0 ? compactNumber(followersNumber) : "—"],
-        ["Based", values.city || "—"],
+        ["Country", values.nationality || "—"],
       ]
     : [
         ["Height", values.height],
@@ -184,8 +184,9 @@ export function ModelForm({ id, slug, initial, suggestions }: ModelFormProps) {
                 </fieldset>
               )}
 
-              <Field label="City" placeholder="Istanbul" {...input("city")} />
-              <Field label="Nationality" placeholder="Turkish" {...input("nationality")} />
+              <input type="hidden" name="city" value={values.city} />
+              <input type="hidden" name="locationCity" value="" />
+              <Field label="Country" placeholder="Turkey" hint="Nationality / country of origin" {...input("nationality")} />
 
               <div className="sm:col-span-2">
                 <label htmlFor="f-bio" className="admin-label">
@@ -299,8 +300,7 @@ export function ModelForm({ id, slug, initial, suggestions }: ModelFormProps) {
                   hint={values.locationCountry === PLACEMENT.country ? `Listed under “${PLACEMENT.label}” until the end date.` : undefined}
                 />
               </div>
-              <Field label="City" placeholder="Warsaw" hint="Optional" {...input("locationCity")} />
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3 sm:col-span-2 sm:max-w-md">
                 <Field label="From" type="date" {...input("locationFrom")} />
                 <Field label="Until" type="date" min={values.locationFrom || undefined} {...input("locationTo")} />
               </div>
@@ -435,7 +435,7 @@ export function ModelForm({ id, slug, initial, suggestions }: ModelFormProps) {
               </span>
               <div className="on-photo absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-4 pt-16">
                 <p className="font-display text-2xl leading-tight text-white">{name || (isTalent ? "New talent" : "New model")}</p>
-                <p className="mt-0.5 text-xs text-zinc-300">{(isTalent && values.specialties) || values.city || "City"}</p>
+                <p className="mt-0.5 text-xs text-zinc-300">{(isTalent && values.specialties) || values.nationality || "Country"}</p>
                 {values.locationCountry && (
                   <div className="mt-3 border-t border-white/20 pt-3">
                     <p className="flex items-center gap-2 text-xs font-semibold tracking-[0.22em] text-white uppercase">

@@ -23,7 +23,7 @@ export function ModelMedia({ model }: { model: Model }) {
   return (
     <div>
       {tabs.length > 1 && (
-        <div role="tablist" aria-label="Media" className="mb-6 flex gap-6 border-b border-line">
+        <div role="tablist" aria-label="Media" className="mb-8 flex flex-wrap items-center gap-2">
           {tabs.map(([key, label, count]) => (
             <button
               key={key}
@@ -32,11 +32,14 @@ export function ModelMedia({ model }: { model: Model }) {
               aria-selected={active === key}
               onClick={() => setActive(key)}
               className={cn(
-                "-mb-px border-b pb-3 text-sm font-medium transition-colors",
-                active === key ? "border-ink text-ink" : "border-transparent text-stone hover:text-ink",
+                "inline-flex h-10 items-center gap-2 rounded-full px-5 text-xs font-semibold tracking-[0.22em] uppercase transition-colors",
+                active === key
+                  ? "bg-ink text-paper"
+                  : "border border-ink/15 text-stone hover:border-ink/40 hover:text-ink",
               )}
             >
-              {label} <span className="text-stone tabular-nums">{count}</span>
+              {label}
+              <span className={cn("tabular-nums", active === key ? "text-paper/60" : "text-stone")}>{count}</span>
             </button>
           ))}
         </div>
@@ -45,7 +48,7 @@ export function ModelMedia({ model }: { model: Model }) {
       {active === "portfolio" && <Gallery images={model.portfolio} name={name} />}
       {active === "snaps" && <Gallery images={model.snaps} name={`${name} — snaps`} layout="grid" />}
       {active === "videos" && (
-        <div className="grid gap-4">
+        <div className="grid gap-3 sm:gap-4">
           {model.videos.map((video) => {
             const embed = videoEmbedUrl(video.url);
             return (

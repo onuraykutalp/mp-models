@@ -18,12 +18,14 @@ export function ModelMedia({ model }: { model: Model }) {
   ).filter(([, , count]) => count > 0);
   const [active, setActive] = useState<Tab>(tabs[0]?.[0] ?? "portfolio");
 
-  if (tabs.length === 0) return null;
+  if (tabs.length === 0) {
+    return <p className="py-12 text-sm text-stone">No media uploaded yet.</p>;
+  }
 
   return (
     <div>
       {tabs.length > 1 && (
-        <div role="tablist" aria-label="Media" className="mb-8 flex flex-wrap items-center gap-2">
+        <div role="tablist" aria-label="Media" className="mb-5 flex flex-wrap gap-x-6 gap-y-2 border-b border-line">
           {tabs.map(([key, label, count]) => (
             <button
               key={key}
@@ -32,14 +34,11 @@ export function ModelMedia({ model }: { model: Model }) {
               aria-selected={active === key}
               onClick={() => setActive(key)}
               className={cn(
-                "inline-flex h-10 items-center gap-2 rounded-full px-5 text-xs font-semibold tracking-[0.22em] uppercase transition-colors",
-                active === key
-                  ? "bg-ink text-paper"
-                  : "border border-ink/15 text-stone hover:border-ink/40 hover:text-ink",
+                "-mb-px border-b-2 pb-3 text-[11px] font-semibold tracking-[0.22em] uppercase transition-colors",
+                active === key ? "border-ink text-ink" : "border-transparent text-stone hover:text-ink",
               )}
             >
-              {label}
-              <span className={cn("tabular-nums", active === key ? "text-paper/60" : "text-stone")}>{count}</span>
+              {label} <span className="ml-1 tabular-nums text-stone">{count}</span>
             </button>
           ))}
         </div>
@@ -48,7 +47,7 @@ export function ModelMedia({ model }: { model: Model }) {
       {active === "portfolio" && <Gallery images={model.portfolio} name={name} />}
       {active === "snaps" && <Gallery images={model.snaps} name={`${name} — snaps`} layout="grid" />}
       {active === "videos" && (
-        <div className="grid gap-3 sm:gap-4">
+        <div className="grid gap-3 sm:grid-cols-2">
           {model.videos.map((video) => {
             const embed = videoEmbedUrl(video.url);
             return (

@@ -52,7 +52,7 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
 
   return (
     <>
-      <div className="container-x pt-24 lg:pt-28">
+      <div className="container-x pt-20 lg:pt-24">
         <Link
           href={backHref}
           className="group inline-flex items-center gap-2 text-xs tracking-[0.28em] text-stone uppercase transition-colors hover:text-ink"
@@ -62,9 +62,9 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
         </Link>
       </div>
 
-      {/* Split portrait + identity — fits one composition without a giant hero */}
-      <section className="container-x grid items-start gap-8 pt-8 pb-12 lg:grid-cols-12 lg:gap-10 lg:pb-16">
-        <div className="relative aspect-[3/4] overflow-hidden bg-paper-dark lg:col-span-5 xl:col-span-4">
+      {/* Compact profile so the portfolio strip peeks into the first viewport */}
+      <section className="container-x grid items-start gap-6 pt-5 pb-6 lg:grid-cols-12 lg:gap-8 lg:pb-8">
+        <div className="relative mx-auto aspect-[3/4] max-h-[min(52svh,480px)] w-full overflow-hidden bg-paper-dark lg:col-span-5 lg:mx-0 lg:max-h-[min(58svh,520px)] xl:col-span-4">
           <Image
             src={model.coverImage}
             alt={displayName}
@@ -103,15 +103,17 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
             </h1>
 
             {model.bio && (
-              <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-ink-soft">{model.bio}</p>
+              <p className="mt-4 max-w-xl line-clamp-3 text-[15px] leading-relaxed text-ink-soft lg:line-clamp-4">
+                {model.bio}
+              </p>
             )}
 
-            <div className="mt-8 empty:hidden">
+            <div className="mt-5 empty:hidden">
               <Measurements model={model} />
             </div>
 
             {(talentDetails.length > 0 || model.website) && (
-              <dl className="mt-8 grid max-w-xl grid-cols-2 border-t border-line sm:grid-cols-3">
+              <dl className="mt-5 grid max-w-xl grid-cols-2 border-t border-line sm:grid-cols-3">
                 {talentDetails.map(([label, value]) => (
                   <div key={label} className="border-b border-line py-3.5 pr-3">
                     <dt className="text-[10px] tracking-[0.18em] text-stone uppercase">{label}</dt>
@@ -132,7 +134,7 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
             )}
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center gap-2.5">
+          <div className="mt-6 flex flex-wrap items-center gap-2.5">
             <ShortlistButton model={model} variant="full" className="rounded-none" />
             <Link
               href={`/contact?model=${model.slug}`}
@@ -166,13 +168,13 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
         </div>
       </section>
 
-      {/* Dense art-board gallery */}
-      <section className="border-t border-line">
-        <div className="container-x py-10 lg:py-14">
-          <div className="mb-6 flex items-end justify-between gap-4">
+      {/* Portfolio peeks into the first screen so scroll is obvious */}
+      <section className="border-t border-line bg-gradient-to-b from-transparent to-paper-dark/30">
+        <div className="container-x pt-5 pb-10 lg:pt-6 lg:pb-14">
+          <div className="mb-4 flex items-end justify-between gap-4">
             <div>
               <p className="eyebrow text-stone">Portfolio</p>
-              <h2 className="font-display mt-1 text-2xl sm:text-3xl">
+              <h2 className="font-display mt-1 text-xl sm:text-2xl">
                 Image <em>board</em>
               </h2>
             </div>
@@ -180,9 +182,7 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
               <p className="text-[11px] tracking-[0.22em] text-stone uppercase tabular-nums">{frameCount} frames</p>
             )}
           </div>
-          <Reveal>
-            <ModelMedia model={model} />
-          </Reveal>
+          <ModelMedia model={model} />
         </div>
       </section>
 

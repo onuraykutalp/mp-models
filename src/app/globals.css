@@ -13,6 +13,7 @@
 
   --font-sans: var(--font-jost), var(--font-jost-ext), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-bodoni), var(--font-bodoni-ext), ui-serif, Georgia, serif;
+  --font-model: var(--font-cormorant), var(--font-cormorant-ext), "Times New Roman", serif;
 
   --animate-fade-up: fade-up 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   --animate-clock-colon: clock-colon 1.6s steps(1, end) infinite;

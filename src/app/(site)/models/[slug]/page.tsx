@@ -97,9 +97,8 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
               {categoryLabel(model)}
               {model.nationality ? ` · ${model.nationality}` : ""}
             </p>
-            <h1 className="font-display mt-3 text-[clamp(2.75rem,7vw,5.5rem)] leading-[0.92] tracking-tight">
-              {model.firstName}{" "}
-              <em className="text-stone">{model.lastName}</em>
+            <h1 className="font-model mt-3 text-[clamp(2.85rem,7.5vw,5.75rem)] font-light leading-[0.94] tracking-[-0.02em] text-ink">
+              {model.firstName} {model.lastName}
             </h1>
 
             {model.bio && (

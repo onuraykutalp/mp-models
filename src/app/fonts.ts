@@ -73,4 +73,42 @@ export const bodoniExt = localFont({
   preload: false,
 });
 
-export const fontVariables = [jost, jostExt, bodoni, bodoniExt].map((f) => f.variable).join(" ");
+/** Editorial serif for model names — fashion-magazine Cormorant. */
+export const cormorant = localFont({
+  variable: "--font-cormorant",
+  src: [
+    {
+      path: "../../node_modules/@fontsource-variable/cormorant/files/cormorant-latin-wght-normal.woff2",
+      weight: "300 700",
+      style: "normal",
+    },
+    {
+      path: "../../node_modules/@fontsource-variable/cormorant/files/cormorant-latin-wght-italic.woff2",
+      weight: "300 700",
+      style: "italic",
+    },
+  ],
+  display: "swap",
+});
+
+export const cormorantExt = localFont({
+  variable: "--font-cormorant-ext",
+  src: [
+    {
+      path: "../../node_modules/@fontsource-variable/cormorant/files/cormorant-latin-ext-wght-normal.woff2",
+      weight: "300 700",
+      style: "normal",
+    },
+    {
+      path: "../../node_modules/@fontsource-variable/cormorant/files/cormorant-latin-ext-wght-italic.woff2",
+      weight: "300 700",
+      style: "italic",
+    },
+  ],
+  display: "swap",
+  preload: false,
+});
+
+export const fontVariables = [jost, jostExt, bodoni, bodoniExt, cormorant, cormorantExt]
+  .map((f) => f.variable)
+  .join(" ");

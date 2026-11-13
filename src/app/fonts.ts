@@ -73,35 +73,35 @@ export const bodoniExt = localFont({
   preload: false,
 });
 
-/** Editorial serif for model names — fashion-magazine Cormorant. */
-export const cormorant = localFont({
-  variable: "--font-cormorant",
+/** High-fashion display serif for model names — Playfair Display. */
+export const playfair = localFont({
+  variable: "--font-playfair",
   src: [
     {
-      path: "../../node_modules/@fontsource-variable/cormorant/files/cormorant-latin-wght-normal.woff2",
-      weight: "300 700",
+      path: "../../node_modules/@fontsource-variable/playfair-display/files/playfair-display-latin-wght-normal.woff2",
+      weight: "400 900",
       style: "normal",
     },
     {
-      path: "../../node_modules/@fontsource-variable/cormorant/files/cormorant-latin-wght-italic.woff2",
-      weight: "300 700",
+      path: "../../node_modules/@fontsource-variable/playfair-display/files/playfair-display-latin-wght-italic.woff2",
+      weight: "400 900",
       style: "italic",
     },
   ],
   display: "swap",
 });
 
-export const cormorantExt = localFont({
-  variable: "--font-cormorant-ext",
+export const playfairExt = localFont({
+  variable: "--font-playfair-ext",
   src: [
     {
-      path: "../../node_modules/@fontsource-variable/cormorant/files/cormorant-latin-ext-wght-normal.woff2",
-      weight: "300 700",
+      path: "../../node_modules/@fontsource-variable/playfair-display/files/playfair-display-latin-ext-wght-normal.woff2",
+      weight: "400 900",
       style: "normal",
     },
     {
-      path: "../../node_modules/@fontsource-variable/cormorant/files/cormorant-latin-ext-wght-italic.woff2",
-      weight: "300 700",
+      path: "../../node_modules/@fontsource-variable/playfair-display/files/playfair-display-latin-ext-wght-italic.woff2",
+      weight: "400 900",
       style: "italic",
     },
   ],
@@ -109,6 +109,6 @@ export const cormorantExt = localFont({
   preload: false,
 });
 
-export const fontVariables = [jost, jostExt, bodoni, bodoniExt, cormorant, cormorantExt]
+export const fontVariables = [jost, jostExt, bodoni, bodoniExt, playfair, playfairExt]
   .map((f) => f.variable)
   .join(" ");

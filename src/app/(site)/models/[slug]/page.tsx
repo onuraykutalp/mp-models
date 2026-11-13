@@ -71,7 +71,7 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
             fill
             priority
             sizes="(min-width: 1280px) 28vw, (min-width: 1024px) 40vw, 100vw"
-            className="object-cover"
+            className="object-contain object-center"
           />
           {model.location && (
             <div className="absolute bottom-4 left-4 right-4 flex items-center gap-3 border border-paper/20 bg-ink/55 py-2 pr-4 pl-2 text-paper backdrop-blur-md">
@@ -97,7 +97,7 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
               {categoryLabel(model)}
               {model.nationality ? ` · ${model.nationality}` : ""}
             </p>
-            <h1 className="font-model mt-3 text-[clamp(2.85rem,7.5vw,5.75rem)] font-light leading-[0.94] tracking-[-0.02em] text-ink">
+            <h1 className="font-model mt-3 text-[clamp(2.85rem,7.5vw,5.75rem)] font-medium leading-[0.94] tracking-[-0.02em] text-ink">
               {model.firstName} {model.lastName}
             </h1>
 

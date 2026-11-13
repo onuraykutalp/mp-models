@@ -73,42 +73,17 @@ export const bodoniExt = localFont({
   preload: false,
 });
 
-/** High-fashion display serif for model names — Playfair Display. */
-export const playfair = localFont({
-  variable: "--font-playfair",
+/** Delicate fashion display for model names — Italiana. */
+export const italiana = localFont({
+  variable: "--font-italiana",
   src: [
     {
-      path: "../../node_modules/@fontsource-variable/playfair-display/files/playfair-display-latin-wght-normal.woff2",
-      weight: "400 900",
+      path: "../../node_modules/@fontsource/italiana/files/italiana-latin-400-normal.woff2",
+      weight: "400",
       style: "normal",
-    },
-    {
-      path: "../../node_modules/@fontsource-variable/playfair-display/files/playfair-display-latin-wght-italic.woff2",
-      weight: "400 900",
-      style: "italic",
     },
   ],
   display: "swap",
 });
 
-export const playfairExt = localFont({
-  variable: "--font-playfair-ext",
-  src: [
-    {
-      path: "../../node_modules/@fontsource-variable/playfair-display/files/playfair-display-latin-ext-wght-normal.woff2",
-      weight: "400 900",
-      style: "normal",
-    },
-    {
-      path: "../../node_modules/@fontsource-variable/playfair-display/files/playfair-display-latin-ext-wght-italic.woff2",
-      weight: "400 900",
-      style: "italic",
-    },
-  ],
-  display: "swap",
-  preload: false,
-});
-
-export const fontVariables = [jost, jostExt, bodoni, bodoniExt, playfair, playfairExt]
-  .map((f) => f.variable)
-  .join(" ");
+export const fontVariables = [jost, jostExt, bodoni, bodoniExt, italiana].map((f) => f.variable).join(" ");

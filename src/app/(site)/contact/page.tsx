@@ -8,24 +8,21 @@ export const metadata: Metadata = { title: "Contact" };
 const offices = [
   {
     city: "Istanbul",
-    tag: "Headquarters",
-    address: ["Silahşör Cd. No:42, Bomonti", "34381 Şişli, Istanbul"],
-    phone: "+90 212 555 01 01",
-    email: "istanbul@mpmodels.com",
+    tag: "Turkey",
+    email: "info@three15management.com",
   },
   {
-    city: "Milan",
-    tag: "European office",
-    address: ["Via Tortona 27", "20144 Milano, Italy"],
-    phone: "+39 02 5555 0101",
-    email: "milano@mpmodels.com",
+    city: "Warsaw",
+    tag: "Poland",
+    email: "info@three15management.com",
   },
 ];
 
 const departments = [
-  ["Booking", "booking@mpmodels.com"],
-  ["Scouting", "scouting@mpmodels.com"],
-  ["Press", "press@mpmodels.com"],
+  ["Info", "info@three15management.com"],
+  ["Magda", "magda@three15management.com"],
+  ["Poli", "poli@three15management.com"],
+  ["Alissa", "alissa@three15management.com"],
 ];
 
 export default async function ContactPage({ searchParams }: PageProps<"/contact">) {
@@ -74,14 +71,6 @@ export default async function ContactPage({ searchParams }: PageProps<"/contact"
             <p className="eyebrow text-stone">{o.tag}</p>
             <h2 className="font-display mt-2 text-2xl">{o.city}</h2>
             <address className="mt-6 space-y-1 text-sm leading-relaxed not-italic">
-              {o.address.map((line) => (
-                <p key={line}>{line}</p>
-              ))}
-              <p className="pt-3">
-                <a href={`tel:${o.phone.replace(/\s/g, "")}`} className="link-underline">
-                  {o.phone}
-                </a>
-              </p>
               <p>
                 <a href={`mailto:${o.email}`} className="link-underline">
                   {o.email}

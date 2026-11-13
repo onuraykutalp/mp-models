@@ -64,7 +64,7 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
 
       {/* Compact profile so the portfolio strip peeks into the first viewport */}
       <section className="container-x grid items-start gap-6 pt-5 pb-6 lg:grid-cols-12 lg:gap-8 lg:pb-8">
-        <div className="relative mx-auto aspect-[3/4] max-h-[min(52svh,480px)] w-full overflow-hidden bg-paper-dark lg:col-span-5 lg:mx-0 lg:max-h-[min(58svh,520px)] xl:col-span-4">
+        <div className="relative mx-auto aspect-[3/4] max-h-[min(52svh,480px)] w-full overflow-hidden bg-white lg:col-span-5 lg:mx-0 lg:max-h-[min(58svh,520px)] xl:col-span-4">
           <Image
             src={model.coverImage}
             alt={displayName}
@@ -97,7 +97,7 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
               {categoryLabel(model)}
               {model.nationality ? ` · ${model.nationality}` : ""}
             </p>
-            <h1 className="font-model mt-3 text-[clamp(2.85rem,7.5vw,5.75rem)] font-medium leading-[0.94] tracking-[-0.02em] text-ink">
+            <h1 className="font-model mt-3 text-[clamp(2.85rem,7.5vw,5.75rem)] font-normal leading-[0.94] tracking-[0.02em] text-ink">
               {model.firstName} {model.lastName}
             </h1>
 

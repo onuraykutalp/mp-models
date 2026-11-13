@@ -3,8 +3,15 @@ import { boardLinks, secondaryLinks } from "./nav";
 import { ArrowUpRight, Instagram } from "@/components/ui/Icons";
 
 const offices = [
-  { city: "Istanbul", address: "Silahşör Cd. No:42, Bomonti", phone: "+90 212 555 01 01" },
-  { city: "Milan", address: "Via Tortona 27", phone: "+39 02 5555 0101" },
+  { country: "Turkey", city: "Istanbul" },
+  { country: "Poland", city: "Warsaw" },
+];
+
+const emails = [
+  "info@three15management.com",
+  "magda@three15management.com",
+  "poli@three15management.com",
+  "alissa@three15management.com",
 ];
 
 export function Footer() {
@@ -15,16 +22,25 @@ export function Footer() {
           <div className="lg:col-span-6">
             <p className="eyebrow mb-4 text-paper/50">Let&apos;s work together</p>
             <a
-              href="mailto:booking@mpmodels.com"
+              href="mailto:info@three15management.com"
               className="group font-display inline-flex items-center gap-2 text-2xl sm:text-3xl"
             >
-              booking@mpmodels.com
+              info@three15management.com
               <ArrowUpRight
                 width={20}
                 height={20}
                 className="transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
               />
             </a>
+            <ul className="mt-5 space-y-2 text-sm text-paper/75">
+              {emails.slice(1).map((email) => (
+                <li key={email}>
+                  <a href={`mailto:${email}`} className="link-underline">
+                    {email}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:col-span-6">
@@ -61,9 +77,8 @@ export function Footer() {
               <p className="eyebrow text-paper/50">Offices</p>
               {offices.map((o) => (
                 <div key={o.city} className="text-sm leading-relaxed text-paper/80">
-                  <p className="font-semibold text-paper">{o.city}</p>
-                  <p>{o.address}</p>
-                  <p>{o.phone}</p>
+                  <p className="font-semibold text-paper">{o.country}</p>
+                  <p>{o.city}</p>
                 </div>
               ))}
             </div>
@@ -71,7 +86,7 @@ export function Footer() {
         </div>
 
         <div className="mt-16 flex flex-col-reverse items-start justify-between gap-6 border-t border-paper/15 pt-8 text-xs text-paper/50 sm:flex-row sm:items-center">
-          <p>© {new Date().getFullYear()} MP Model Management. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Three15 Management. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="/contact" className="link-underline">
               Privacy Policy

@@ -4,12 +4,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ModelMedia } from "@/components/models/ModelMedia";
 import { Measurements } from "@/components/models/Measurements";
-import { ModelCard } from "@/components/models/ModelCard";
 import { ShortlistButton } from "@/components/models/ShortlistButton";
 import { ArrowLeft, ArrowUpRight, Download, Instagram } from "@/components/ui/Icons";
-import { Reveal } from "@/components/ui/Reveal";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { getModelBySlug, getModels, getRelatedModels } from "@/lib/queries";
+import { getModelBySlug, getModels } from "@/lib/queries";
 import { PlaneIcon } from "@/components/ui/PlaneIcon";
 import { BOARDS, boardHref, categoryLabel, compactNumber, countryName, divisionInfo, fullName, stayRange } from "@/lib/utils";
 
@@ -36,7 +33,6 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
   const model = await getModelBySlug(slug);
   if (!model) notFound();
 
-  const related = await getRelatedModels(model, 4);
   const division = divisionInfo(model.division);
   const board = model.board ? BOARDS[model.board] : undefined;
   const backHref = boardHref(division, board);
@@ -184,29 +180,6 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
           <ModelMedia model={model} />
         </div>
       </section>
-
-      {related.length > 0 && (
-        <section className="border-t border-line py-14 lg:py-20">
-          <div className="container-x">
-            <SectionHeading
-              eyebrow="Keep exploring"
-              title={
-                <>
-                  Similar <em>faces</em>
-                </>
-              }
-              href={backHref}
-            />
-            <div className="mt-10 grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 lg:grid-cols-4">
-              {related.map((m, i) => (
-                <Reveal key={m.slug} delay={i * 60}>
-                  <ModelCard model={m} />
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
     </>
   );
 }

@@ -26,8 +26,8 @@ interface FilterState {
 export const HEIGHT_BOUNDS = { min: 100, max: 200 } as const;
 
 export const SORTS: { value: SortKey; label: string }[] = [
-  { value: "featured", label: "Featured" },
   { value: "name", label: "Name (A-Z)" },
+  { value: "featured", label: "Featured" },
   { value: "height-desc", label: "Height (tallest first)" },
   { value: "height-asc", label: "Height (shortest first)" },
 ];
@@ -38,7 +38,7 @@ const initial = {
   eyes: [] as string[],
   minHeight: HEIGHT_BOUNDS.min,
   maxHeight: HEIGHT_BOUNDS.max,
-  sort: "featured" as SortKey,
+  sort: "name" as SortKey,
 };
 
 const toggleIn = (list: string[], value: string) =>

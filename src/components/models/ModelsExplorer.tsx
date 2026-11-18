@@ -12,6 +12,10 @@ import { cn } from "@/lib/utils";
 const uniq = (values: (string | null)[]) =>
   [...new Set(values.filter((v): v is string => !!v))].sort((a, b) => a.localeCompare(b, "en"));
 
+/** A–Z by first name, then last name; accents sort next to their base letter. */
+const byName = (a: Model, b: Model) =>
+  a.firstName.localeCompare(b.firstName, "en", { sensitivity: "base" }) || a.lastName.localeCompare(b.lastName, "en", { sensitivity: "base" });
+
 /** Talents without a height sort after everyone else in either direction. */
 const byHeight = (dir: 1 | -1) => (a: Model, b: Model) =>
   a.height == null ? 1 : b.height == null ? -1 : (a.height - b.height) * dir;
@@ -60,13 +64,14 @@ export function ModelsExplorer({ models, showDivision, showBoard }: ModelsExplor
     );
     switch (sort) {
       case "name":
-        return [...list].sort((a, b) => a.firstName.localeCompare(b.firstName, "en"));
+        return [...list].sort(byName);
       case "height-asc":
         return [...list].sort(byHeight(1));
       case "height-desc":
         return [...list].sort(byHeight(-1));
       default:
-        return [...list].sort((a, b) => Number(b.featured) - Number(a.featured));
+        // Featured first, alphabetical within each group.
+        return [...list].sort((a, b) => Number(b.featured) - Number(a.featured) || byName(a, b));
     }
   }, [models, query, hair, eyes, minHeight, maxHeight, sort]);
 

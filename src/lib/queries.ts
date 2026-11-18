@@ -94,7 +94,7 @@ export function getModels(division?: Division, board?: Board, placed = false): P
       const rows = await (await db()).model.findMany({
         where: { published: true, ...(division && { division }), ...(board && { board }), ...(placed && placedWhere()) },
         include: mediaInclude,
-        orderBy: [{ featured: "desc" }, { createdAt: "asc" }],
+        orderBy: [{ firstName: "asc" }, { lastName: "asc" }],
       });
       return rows.map(toModel);
     },

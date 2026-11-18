@@ -216,6 +216,7 @@ const modelSchema = z
     locationFrom: stayDate("Start date"),
     locationTo: stayDate("End date"),
     bio: z.string().trim().max(2000, "Bio is too long."),
+    internalNotes: optionalText("Notes", 5000),
     featured: z.literal("true").optional().transform(Boolean),
     published: z.literal("true").optional().transform(Boolean),
     portfolio: jsonList(z.string().refine(isImageUrl)).refine((l) => l.length > 0, "Add at least one portfolio image."),

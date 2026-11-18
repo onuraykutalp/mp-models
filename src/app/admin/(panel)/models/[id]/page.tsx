@@ -93,6 +93,7 @@ export default async function EditModelPage({ params }: PageProps<"/admin/models
           locationFrom: model.locationFrom?.toISOString().slice(0, 10) ?? "",
           locationTo: model.locationTo?.toISOString().slice(0, 10) ?? "",
           bio: model.bio,
+          internalNotes: model.internalNotes ?? "",
           featured: model.featured,
           published: model.published,
           portfolio: images("PORTFOLIO"),

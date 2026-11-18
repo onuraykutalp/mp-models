@@ -24,6 +24,7 @@ export interface ModelFormValues {
   locationFrom: string;
   locationTo: string;
   bio: string;
+  internalNotes: string;
   featured: boolean;
   published: boolean;
   portfolio: string[];
@@ -56,6 +57,7 @@ export const EMPTY_MODEL: ModelFormValues = {
   locationFrom: "",
   locationTo: "",
   bio: "",
+  internalNotes: "",
   featured: false,
   published: true,
   portfolio: [],

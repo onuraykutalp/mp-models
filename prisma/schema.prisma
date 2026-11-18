@@ -69,6 +69,8 @@ model Model {
   followers   Int?
   specialties String?      @db.VarChar(200)
   bio         String       @db.Text
+  /// Staff-only notes — shown in the admin panel, never on the public site.
+  internalNotes String?    @db.Text
   coverImage  String       @db.VarChar(500)
   portfolioPdf String?     @db.VarChar(500)
   /// Where the model is right now (ISO 3166 alpha-2) and for how long; all optional.

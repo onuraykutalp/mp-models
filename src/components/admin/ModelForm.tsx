@@ -6,7 +6,7 @@ import { startTransition, useActionState, useEffect, useMemo, useState, type For
 import type { Board, Division, FormState } from "@/types";
 import type { ModelFormValues } from "@/lib/model-form";
 import { deleteModel, saveModel } from "@/app/admin/actions";
-import { IconCamera, IconExternal, IconImage, IconLink, IconTrash, IconUsers, IconVideo } from "./icons";
+import { IconCamera, IconExternal, IconImage, IconLink, IconLock, IconTrash, IconUsers, IconVideo } from "./icons";
 import { MediaManager } from "./MediaManager";
 import { PdfUpload } from "./PdfUpload";
 import { Field, FieldMessage, Notice, SubmitButton, Toggle } from "./ui";
@@ -385,6 +385,26 @@ export function ModelForm({ id, slug, initial, suggestions }: ModelFormProps) {
                 </div>
               ))}
             </div>
+          </Section>
+
+          <Section
+            icon={<IconLock width={16} height={16} />}
+            title="Internal notes"
+            description="Only visible to the team in this admin panel — never shown on the website."
+          >
+            <textarea
+              id="f-internalNotes"
+              name="internalNotes"
+              rows={5}
+              maxLength={5000}
+              value={values.internalNotes}
+              onChange={(e) => set("internalNotes", e.target.value)}
+              aria-label="Internal notes"
+              aria-invalid={!!errors.internalNotes || undefined}
+              placeholder="Availability, rates, contact person, contract details, anything the team should know…"
+              className="admin-input h-auto resize-y py-3 leading-relaxed"
+            />
+            <FieldMessage error={errors.internalNotes} hint={`${values.internalNotes.length} / 5000`} />
           </Section>
 
           <MediaManager

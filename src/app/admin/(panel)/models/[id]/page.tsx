@@ -9,7 +9,7 @@ import { getAppearanceSuggestions } from "@/lib/admin";
 import { requireAdmin } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
 import { mediaInclude } from "@/lib/queries";
-import { categoryLabel } from "@/lib/utils";
+import { categoryLabel, fullName } from "@/lib/utils";
 
 const getModel = (id: string) =>
   prisma.model.findUnique({
@@ -23,7 +23,7 @@ const str = (n: number | null) => (n == null ? "" : String(n));
 
 export async function generateMetadata({ params }: PageProps<"/admin/models/[id]">): Promise<Metadata> {
   const model = await getModel((await params).id);
-  return { title: model ? `${model.firstName} ${model.lastName}` : "Model not found" };
+  return { title: model ? fullName(model) : "Model not found" };
 }
 
 export default async function EditModelPage({ params }: PageProps<"/admin/models/[id]">) {
@@ -46,7 +46,7 @@ export default async function EditModelPage({ params }: PageProps<"/admin/models
             Create Composite Card
           </Link>
         }
-        title={`${model.firstName} ${model.lastName}`}
+        title={fullName(model)}
         description={`${categoryLabel(model)} · last updated ${model.updatedAt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}`}
       />
       <ModelJobsPanel

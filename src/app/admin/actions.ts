@@ -172,7 +172,9 @@ const handle = z
 const modelSchema = z
   .object({
     firstName: text("First name"),
-    lastName: text("Last name"),
+    lastName: z
+      .preprocess(blankToNull, z.string().trim().max(60, "Last name is too long.").nullable())
+      .transform((v) => v ?? ""),
     division: z.enum(DIVISION_KEYS, { error: "Choose a category." }),
     board: z.preprocess(blankToNull, z.enum(BOARD_KEYS, { error: "Choose a board." }).nullable()),
     height: measure("Height", 50, 230),
@@ -278,7 +280,7 @@ export async function saveModel(id: string | null, _prev: FormState, fd: FormDat
   }
 
   const { portfolio, snaps, videos, ...fields } = parsed.data;
-  const name = `${fields.firstName} ${fields.lastName}`;
+  const name = `${fields.firstName} ${fields.lastName}`.trim();
   const existing = id ? await prisma.model.findUnique({ where: { id }, include: { images: true, videos: true } }) : null;
   if (id && !existing) return { status: "error", message: "This model no longer exists." };
 

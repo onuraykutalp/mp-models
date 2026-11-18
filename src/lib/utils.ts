@@ -218,7 +218,7 @@ export const categoryLabel = (m: { division: Division; board: Board | null }) =>
 export const compactNumber = (n: number) =>
   new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }).format(n);
 
-export const fullName = (m: { firstName: string; lastName: string }) => `${m.firstName} ${m.lastName}`;
+export const fullName = (m: { firstName: string; lastName: string }) => `${m.firstName} ${m.lastName}`.trim();
 
 export type ImageVariant = "cover" | "portrait" | "close" | "mono" | "wide" | "square";
 

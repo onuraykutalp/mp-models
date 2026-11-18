@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ModelForm } from "@/components/admin/ModelForm";
 import { ModelJobsPanel } from "@/components/admin/ModelJobsPanel";
 import { PageHeader } from "@/components/admin/PageHeader";
-import { IconArrowLeft } from "@/components/admin/icons";
+import { IconArrowLeft, IconImage } from "@/components/admin/icons";
 import { getAppearanceSuggestions } from "@/lib/admin";
 import { requireAdmin } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
@@ -40,6 +40,12 @@ export default async function EditModelPage({ params }: PageProps<"/admin/models
         <IconArrowLeft width={16} height={16} /> Models
       </Link>
       <PageHeader
+        actions={
+          <Link href={`/admin/models/${model.id}/composite`} className="admin-btn-ghost h-10">
+            <IconImage width={16} height={16} />
+            Create Composite Card
+          </Link>
+        }
         title={`${model.firstName} ${model.lastName}`}
         description={`${categoryLabel(model)} · last updated ${model.updatedAt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}`}
       />

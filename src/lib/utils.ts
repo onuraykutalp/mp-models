@@ -68,7 +68,7 @@ export const BOARDS: Record<Board, BoardInfo> = {
   IN_TOWN: {
     key: "IN_TOWN",
     slug: "in-town",
-    label: "In Town",
+    label: "In Town Turkey",
     description: "Models currently in Turkey — or arriving soon — and available to book locally.",
   },
 };
@@ -79,7 +79,7 @@ export const BOARDS: Record<Board, BoardInfo> = {
  */
 export const PLACEMENT = {
   slug: "placed-in-turkey",
-  label: "In Town",
+  label: "In Town Turkey",
   country: "TR",
   description: "Models currently in Turkey — or arriving soon — and available to book locally.",
 } as const;

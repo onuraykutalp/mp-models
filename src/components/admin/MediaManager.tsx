@@ -57,6 +57,8 @@ export function MediaManager({ kind, items, onChange, title, description, icon, 
   const [uploads, setUploads] = useState<Upload[]>([]);
   const [dropping, setDropping] = useState(false);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
+  /** Slot (0…items.length) where the dragged tile will be inserted on drop. */
+  const [insertAt, setInsertAt] = useState<number | null>(null);
   const [link, setLink] = useState("");
   const [linkError, setLinkError] = useState<string>();
 
@@ -99,6 +101,20 @@ export function MediaManager({ kind, items, onChange, title, description, icon, 
       return next;
     });
 
+  const endDrag = () => {
+    setDragIndex(null);
+    setInsertAt(null);
+  };
+
+  /** Drops the dragged tile into the highlighted slot, shifting the others along. */
+  const dropAt = (slot: number) => {
+    if (dragIndex !== null) {
+      const to = slot > dragIndex ? slot - 1 : slot;
+      if (to !== dragIndex) move(dragIndex, to);
+    }
+    endDrag();
+  };
+
   const addLink = () => {
     const url = link.trim();
     if (!/^https:\/\//.test(url)) return setLinkError("Paste a full https:// link.");
@@ -111,6 +127,7 @@ export function MediaManager({ kind, items, onChange, title, description, icon, 
   const onDrop = (e: DragEvent) => {
     e.preventDefault();
     setDropping(false);
+    if (dragIndex !== null) return dropAt(insertAt ?? dragIndex); // released in a gap between tiles
     if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
   };
 
@@ -134,6 +151,8 @@ export function MediaManager({ kind, items, onChange, title, description, icon, 
           if (e.dataTransfer.types.includes("Files")) {
             e.preventDefault();
             setDropping(true);
+          } else if (dragIndex !== null) {
+            e.preventDefault(); // allow dropping in the gaps between tiles
           }
         }}
         onDragLeave={() => setDropping(false)}
@@ -148,38 +167,61 @@ export function MediaManager({ kind, items, onChange, title, description, icon, 
               onDragStart={(e) => {
                 setDragIndex(i);
                 e.dataTransfer.effectAllowed = "move";
+                e.dataTransfer.setData("text/plain", String(i)); // Firefox won't start a drag without data
               }}
               onDragOver={(e) => {
-                if (dragIndex === null || dragIndex === i) return;
+                if (dragIndex === null) return;
                 e.preventDefault();
-                move(dragIndex, i);
-                setDragIndex(i);
+                e.dataTransfer.dropEffect = "move";
+                // Left half of a tile means "before it", right half "after it".
+                const rect = e.currentTarget.getBoundingClientRect();
+                const slot = e.clientX < rect.left + rect.width / 2 ? i : i + 1;
+                if (slot !== insertAt) setInsertAt(slot);
               }}
-              onDragEnd={() => setDragIndex(null)}
+              onDrop={(e) => {
+                if (dragIndex === null) return;
+                e.preventDefault();
+                e.stopPropagation();
+                dropAt(insertAt ?? i);
+              }}
+              onDragEnd={endDrag}
               className={cn(
-                "group relative cursor-grab overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.04] active:cursor-grabbing",
+                "group relative cursor-grab rounded-xl border border-white/[0.07] bg-white/[0.04] active:cursor-grabbing",
                 kind === "image" ? "aspect-[3/4]" : "aspect-video",
-                dragIndex === i && "opacity-40 ring-2 ring-clay-light",
+                dragIndex === i && "opacity-40",
               )}
             >
-              <MediaPreview kind={kind} url={url} />
-              {coverLabel && i === 0 && (
-                <span className="absolute top-2 left-2 rounded-full bg-clay-light px-2 py-0.5 text-[10px] font-semibold text-[#fff] shadow">
-                  {coverLabel}
-                </span>
+              {/* Insertion marker: where the dragged tile lands (hidden for slots that wouldn't move it). */}
+              {dragIndex !== null && insertAt !== null && insertAt !== dragIndex && insertAt !== dragIndex + 1 && (
+                <>
+                  {insertAt === i && (
+                    <span className="pointer-events-none absolute -inset-y-1 -left-2 z-10 w-1 rounded-full bg-clay-light shadow-[0_0_10px] shadow-clay-light" />
+                  )}
+                  {insertAt === items.length && i === items.length - 1 && (
+                    <span className="pointer-events-none absolute -inset-y-1 -right-2 z-10 w-1 rounded-full bg-clay-light shadow-[0_0_10px] shadow-clay-light" />
+                  )}
+                </>
               )}
-              <div className="on-photo absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/80 to-transparent p-1.5 pt-6 opacity-100 transition-opacity sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100">
-                <span className="flex gap-1">
-                  <TileButton label="Move left" onClick={() => move(i, i - 1)} disabled={i === 0}>
-                    <IconArrowLeft width={14} height={14} />
+              <div className="absolute inset-0 overflow-hidden rounded-xl">
+                <MediaPreview kind={kind} url={url} />
+                {coverLabel && i === 0 && (
+                  <span className="absolute top-2 left-2 rounded-full bg-clay-light px-2 py-0.5 text-[10px] font-semibold text-[#fff] shadow">
+                    {coverLabel}
+                  </span>
+                )}
+                <div className="on-photo absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/80 to-transparent p-1.5 pt-6 opacity-100 transition-opacity sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100">
+                  <span className="flex gap-1">
+                    <TileButton label="Move left" onClick={() => move(i, i - 1)} disabled={i === 0}>
+                      <IconArrowLeft width={14} height={14} />
+                    </TileButton>
+                    <TileButton label="Move right" onClick={() => move(i, i + 1)} disabled={i === items.length - 1}>
+                      <IconArrowRight width={14} height={14} />
+                    </TileButton>
+                  </span>
+                  <TileButton label="Remove" onClick={() => onChange((list) => list.filter((u) => u !== url))} danger>
+                    <IconClose width={14} height={14} />
                   </TileButton>
-                  <TileButton label="Move right" onClick={() => move(i, i + 1)} disabled={i === items.length - 1}>
-                    <IconArrowRight width={14} height={14} />
-                  </TileButton>
-                </span>
-                <TileButton label="Remove" onClick={() => onChange((list) => list.filter((u) => u !== url))} danger>
-                  <IconClose width={14} height={14} />
-                </TileButton>
+                </div>
               </div>
             </li>
           ))}

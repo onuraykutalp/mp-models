@@ -337,7 +337,7 @@ export function ModelForm({ id, slug, initial, suggestions }: ModelFormProps) {
             description={
               isTalent
                 ? "Optional for talents — fill in only if they also model."
-                : "Metric values — the website converts them to feet and inches."
+                : "Optional. Metric values — the website converts them to feet and inches."
             }
           >
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
@@ -359,7 +359,7 @@ export function ModelForm({ id, slug, initial, suggestions }: ModelFormProps) {
           <Section
             icon={<IconCamera width={16} height={16} />}
             title="Appearance"
-            description={isTalent ? "Optional for talents. Used for filtering on the website." : "Used for filtering on the website."}
+            description={isTalent ? "Optional for talents. Used for filtering on the website." : "Optional. Used for filtering on the website."}
           >
             <div className="grid gap-4 sm:grid-cols-2">
               {(["hair", "eyes"] as const).map((key) => (

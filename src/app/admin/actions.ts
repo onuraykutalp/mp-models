@@ -169,16 +169,6 @@ const handle = z
   .max(60)
   .transform((s) => (s ? `@${s.replace(/^@+/, "")}` : null));
 
-const REQUIRED_MEASUREMENTS = [
-  ["height", "Height"],
-  ["bust", "Bust"],
-  ["waist", "Waist"],
-  ["hips", "Hips"],
-  ["shoes", "Shoe size"],
-  ["hair", "Hair"],
-  ["eyes", "Eyes"],
-] as const;
-
 const modelSchema = z
   .object({
     firstName: text("First name"),
@@ -242,11 +232,6 @@ const modelSchema = z
     if (!info) return;
     if (info.boards.length > 0 && (!d.board || !info.boards.includes(d.board))) {
       ctx.addIssue({ code: "custom", path: ["board"], message: `Choose a ${info.label} board.` });
-    }
-    if (info.measured) {
-      for (const [key, label] of REQUIRED_MEASUREMENTS) {
-        if (d[key] == null) ctx.addIssue({ code: "custom", path: [key], message: `${label} is required.` });
-      }
     }
     const hasStay = d.locationFrom || d.locationTo;
     if (!d.locationCountry && hasStay) {

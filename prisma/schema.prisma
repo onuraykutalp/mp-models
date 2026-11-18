@@ -24,6 +24,7 @@ enum Board {
   PHOTOGRAPHER
   HAIR_STYLIST
   DANCER
+  IN_TOWN
 }
 
 enum ImageKind {

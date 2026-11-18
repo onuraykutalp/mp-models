@@ -9,7 +9,8 @@ export type Board =
   | "MAKEUP_ARTIST"
   | "PHOTOGRAPHER"
   | "HAIR_STYLIST"
-  | "DANCER";
+  | "DANCER"
+  | "IN_TOWN";
 
 export type JobKind = "BASIC_EVENT" | "WORK" | "FITTING" | "ZOOM_CALL";
 

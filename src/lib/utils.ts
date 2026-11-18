@@ -65,12 +65,21 @@ export const BOARDS: Record<Board, BoardInfo> = {
     label: "Dancers",
     description: "Contemporary, commercial and stage dancers for film, fashion and live performance.",
   },
+  IN_TOWN: {
+    key: "IN_TOWN",
+    slug: "in-town",
+    label: "In Town",
+    description: "Models currently in Turkey — or arriving soon — and available to book locally.",
+  },
 };
 
-/** A board-like listing derived from where models currently are rather than a stored board. */
+/**
+ * A board-like listing derived from where models currently are rather than a stored board.
+ * Only used by divisions without an "In Town" board (Kids); Women/Men use the IN_TOWN board.
+ */
 export const PLACEMENT = {
   slug: "placed-in-turkey",
-  label: "Placed in Turkey",
+  label: "In Town",
   country: "TR",
   description: "Models currently in Turkey — or arriving soon — and available to book locally.",
 } as const;
@@ -93,18 +102,18 @@ export const DIVISIONS: DivisionInfo[] = [
     slug: "women",
     label: "Women",
     description: "International women models for runway, editorial and commercial work.",
-    boards: ["MAINBOARD", "NEW_FACES", "PLUS_SIZE"],
+    boards: ["MAINBOARD", "NEW_FACES", "PLUS_SIZE", "IN_TOWN"],
     measured: true,
-    placement: true,
+    placement: false,
   },
   {
     key: "MEN",
     slug: "men",
     label: "Men",
     description: "A strong men's board, from fashion weeks to global campaigns.",
-    boards: ["MAINBOARD", "NEW_FACES"],
+    boards: ["MAINBOARD", "NEW_FACES", "IN_TOWN"],
     measured: true,
-    placement: true,
+    placement: false,
   },
   {
     key: "KIDS",
@@ -145,7 +154,9 @@ export function divisionBySlug(slug?: string) {
 export function resolveBoardParams(divisionSlug?: string, boardSlug?: string) {
   const division = divisionBySlug(divisionSlug);
   const legacyBoard = divisionSlug ? LEGACY_SLUGS[divisionSlug]?.board : undefined;
-  const slug = boardSlug ?? legacyBoard;
+  let slug = boardSlug ?? legacyBoard;
+  // Old "Placed in Turkey" links now point at the In Town board where the division has one.
+  if (slug === PLACEMENT.slug && division?.boards.includes("IN_TOWN")) slug = BOARDS.IN_TOWN.slug;
   const board = division?.boards.map((b) => BOARDS[b]).find((b) => b.slug === slug);
   const placed = !!division?.placement && slug === PLACEMENT.slug;
   return { division, board, placed };

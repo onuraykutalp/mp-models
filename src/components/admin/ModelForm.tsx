@@ -297,7 +297,7 @@ export function ModelForm({ id, slug, initial, suggestions }: ModelFormProps) {
                 </div>
                 <FieldMessage
                   error={errors.locationCountry}
-                  hint={values.locationCountry === PLACEMENT.country ? `Listed under “${PLACEMENT.label}” until the end date.` : undefined}
+                  hint={division.placement && values.locationCountry === PLACEMENT.country ? `Listed under “${PLACEMENT.label}” until the end date.` : undefined}
                 />
               </div>
               <div className="grid grid-cols-2 gap-3 sm:col-span-2 sm:max-w-md">

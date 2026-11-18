@@ -10,7 +10,7 @@ export function OrganizationJsonLd() {
         "@id": `${SITE}/#organization`,
         name: "Three15 Management",
         url: SITE,
-        logo: `${SITE}/brand/three15-mark.svg`,
+        logo: `${SITE}/brand/three15-logo.png`,
         sameAs: [],
         description:
           "International model management agency representing women, men, kids and talents.",

@@ -167,12 +167,7 @@ export default async function ModelPage({ params }: PageProps<"/models/[slug]">)
       <section className="border-t border-line bg-gradient-to-b from-transparent to-paper-dark/30">
         <div className="container-x pt-5 pb-10 lg:pt-6 lg:pb-14">
           <div className="mb-4 flex items-end justify-between gap-4">
-            <div>
-              <p className="eyebrow text-stone">Portfolio</p>
-              <h2 className="font-display mt-1 text-xl sm:text-2xl">
-                Image <em>board</em>
-              </h2>
-            </div>
+            <p className="eyebrow text-stone">Portfolio</p>
             {frameCount > 0 && (
               <p className="text-[11px] tracking-[0.22em] text-stone uppercase tabular-nums">{frameCount} frames</p>
             )}
